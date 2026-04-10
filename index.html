@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mirador Dental | A New Perspective on Your Smile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "on-secondary-container": "#fffbff",
+        "on-primary-fixed-variant": "#0031c4",
+        "on-tertiary": "#ffffff",
+        "on-surface": "#191c1e",
+        "primary-container": "#4361ee",
+        "primary": "#2346d5",
+        "inverse-primary": "#bac3ff",
+        "on-primary-container": "#f4f2ff",
+        "surface-container-lowest": "#ffffff",
+        "surface-container-high": "#e6e8ea",
+        "surface-variant": "#e0e3e5",
+        "on-primary": "#ffffff",
+        "surface-bright": "#f7f9fb",
+        "surface-container-low": "#f2f4f6",
+        "on-surface-variant": "#444655",
+        "tertiary": "#00579f",
+        "surface-container-highest": "#e0e3e5",
+        "outline-variant": "#c4c5d7",
+        "outline": "#747686",
+        "surface-container": "#eceef0",
+        "primary-fixed": "#dee1ff",
+        "surface": "#f7f9fb",
+        "tertiary-container": "#0a70c8",
+        "secondary-container": "#6561f0",
+        "on-secondary-fixed-variant": "#352ac0",
+        "background": "#f7f9fb",
+      },
+      borderRadius: {
+        DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", "2xl": "1rem",
+        "3xl": "1.5rem", "4xl": "2rem", full: "9999px",
+      },
+      fontFamily: {
+        headline: ["Plus Jakarta Sans"],
+        body: ["Public Sans"],
+        label: ["Public Sans"],
+      },
+    },
+  },
+}
+</script>
+<style>
+  /* ─── Base ─── */
+  *, *::before, *::after { box-sizing: border-box; }
+  ::selection { background: rgba(35,70,213,.15); }
+
+  /* ─── Glassmorphism ─── */
+  .glass { background: rgba(255,255,255,.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+  .glass-dark { background: rgba(35,70,213,.08); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+  .floating-bar { background: rgba(255,255,255,.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: 0 24px 64px -12px rgba(35,70,213,.18); }
+
+  /* ─── Material Icons ─── */
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+
+  /* ─── Gradient button ─── */
+  .btn-primary { background: linear-gradient(135deg, #2346d5 0%, #4361ee 100%); }
+  .btn-primary:hover { background: linear-gradient(135deg, #1a38c4 0%, #3652dd 100%); }
+
+  /* ─── Wavy divider ─── */
+  .wavy { fill: #f7f9fb; }
+  .wavy-low { fill: #f2f4f6; }
+  .wavy-white { fill: #ffffff; }
+
+  /* ─── Scroll animations ─── */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-left { opacity: 0; transform: translateX(-50px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+  .reveal-right { opacity: 0; transform: translateX(50px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal-right.visible { opacity: 1; transform: translateX(0); }
+  .reveal-scale { opacity: 0; transform: scale(.9); transition: opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1); }
+  .reveal-scale.visible { opacity: 1; transform: scale(1); }
+  .delay-100 { transition-delay: .1s; }
+  .delay-200 { transition-delay: .2s; }
+  .delay-300 { transition-delay: .3s; }
+  .delay-400 { transition-delay: .4s; }
+  .delay-500 { transition-delay: .5s; }
+
+  /* ─── Floating badges ─── */
+  @keyframes float { 0%,100%{ transform: translateY(0px);} 50%{ transform: translateY(-12px);} }
+  @keyframes floatAlt { 0%,100%{ transform: translateY(-8px) rotate(-2deg);} 50%{ transform: translateY(6px) rotate(2deg);} }
+  @keyframes pulse-ring { 0%{ transform: scale(.9); opacity:.8;} 70%{ transform: scale(1.4); opacity:0;} 100%{ transform: scale(1.4); opacity:0;} }
+  @keyframes shimmer { 0%{ background-position: -200% center;} 100%{ background-position: 200% center;} }
+  @keyframes orbit { from{ transform: rotate(0deg) translateX(90px) rotate(0deg);} to{ transform: rotate(360deg) translateX(90px) rotate(-360deg);} }
+  @keyframes marquee { 0%{ transform: translateX(0);} 100%{ transform: translateX(-50%);} }
+  @keyframes gradientShift { 0%,100%{ background-position: 0% 50%;} 50%{ background-position: 100% 50%;} }
+  @keyframes ripple { 0%{ transform: scale(0); opacity: .5;} 100%{ transform: scale(4); opacity: 0;} }
+
+  .float-1 { animation: float 4s ease-in-out infinite; }
+  .float-2 { animation: floatAlt 5s ease-in-out infinite; }
+  .float-3 { animation: float 6s ease-in-out infinite 1s; }
+  .pulse-ring::after { content:''; position:absolute; inset:0; border-radius:50%; border:3px solid #2346d5; animation: pulse-ring 2s ease-out infinite; }
+
+  /* ─── Hero gradient bg ─── */
+  .hero-bg { background: linear-gradient(160deg, #dee1ff 0%, #eef0ff 40%, #f7f9fb 100%); }
+
+  /* ─── Shimmer text ─── */
+  .shimmer-text { background: linear-gradient(90deg, #2346d5 0%, #6561f0 40%, #00579f 70%, #2346d5 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer 4s linear infinite; }
+
+  /* ─── Gradient animated bg ─── */
+  .gradient-bg { background: linear-gradient(270deg,#dee1ff,#eef0ff,#d4e3ff,#dee1ff); background-size: 400% 400%; animation: gradientShift 8s ease infinite; }
+
+  /* ─── Before/After slider ─── */
+  #ba-slider { cursor: ew-resize; user-select: none; -webkit-user-select: none; }
+
+  /* ─── FAQ accordion ─── */
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height .4s cubic-bezier(.16,1,.3,1), padding .3s; }
+  .faq-answer.open { max-height: 500px; }
+  .faq-icon { transition: transform .3s cubic-bezier(.16,1,.3,1); }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+  /* ─── Marquee ─── */
+  .marquee-track { display: flex; gap: 2rem; animation: marquee 24s linear infinite; width: max-content; }
+  .marquee-wrap { overflow: hidden; }
+
+  /* ─── Counter ─── */
+  .counter { font-variant-numeric: tabular-nums; }
+
+  /* ─── Card hover lift ─── */
+  .card-lift { transition: transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s; }
+  .card-lift:hover { transform: translateY(-8px); box-shadow: 0 32px 64px -12px rgba(35,70,213,.15); }
+
+  /* ─── Ripple on button click ─── */
+  .ripple-btn { position: relative; overflow: hidden; }
+  .ripple-btn .ripple { position: absolute; border-radius: 50%; transform: scale(0); animation: ripple .6s linear; background: rgba(255,255,255,.4); pointer-events: none; }
+
+  /* ─── Testimonial carousel ─── */
+  .testimonial-track { display: flex; transition: transform .5s cubic-bezier(.16,1,.3,1); }
+
+  /* ─── Stat bar fill ─── */
+  .stat-bar-fill { width: 0; transition: width 1.4s cubic-bezier(.16,1,.3,1); }
+
+  /* ─── Orbit dot ─── */
+  .orbit-dot { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #4361ee; top: 50%; left: 50%; margin: -5px; animation: orbit 6s linear infinite; }
+
+  /* ─── Mobile menu ─── */
+  #mobile-menu { transition: max-height .4s cubic-bezier(.16,1,.3,1), opacity .3s; max-height:0; opacity:0; overflow:hidden; }
+  #mobile-menu.open { max-height: 400px; opacity:1; }
+
+  /* ─── Sticky nav shadow on scroll ─── */
+  #main-nav { transition: box-shadow .3s, background .3s; }
+  #main-nav.scrolled { box-shadow: 0 4px 32px rgba(25,28,30,.06); }
+
+  /* ─── Cursor glow ─── */
+  #cursor-glow { pointer-events:none; position:fixed; z-index:9999; width:400px; height:400px; border-radius:50%; background: radial-gradient(circle, rgba(35,70,213,.06) 0%, transparent 70%); transform: translate(-50%,-50%); transition: left .1s, top .1s; }
+
+  /* ─── Parallax ─── */
+  .parallax-slow { will-change: transform; }
+</style>
+</head>
+<body class="bg-background text-on-background font-body overflow-x-hidden">
+
+<!-- Cursor glow -->
+<div id="cursor-glow"></div>
+
+<!-- ═══════════════════════════════════════════════
+     TOP NAV
+══════════════════════════════════════════════════ -->
+<nav id="main-nav" class="sticky top-0 w-full z-50 glass border-b border-white/30">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-2 group">
+      <div class="w-8 h-8 btn-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform">
+        <span class="material-symbols-outlined text-white text-base" style="font-variation-settings:'FILL' 1;">visibility</span>
+      </div>
+      <span class="text-2xl font-extrabold tracking-tighter text-on-surface font-headline">Mirador<span class="text-primary">.</span></span>
+    </a>
+    <!-- Desktop nav -->
+    <div class="hidden md:flex items-center gap-8 font-headline font-semibold text-sm">
+      <a href="#services" class="text-on-surface-variant hover:text-primary transition-colors">Services</a>
+      <a href="#transform" class="text-on-surface-variant hover:text-primary transition-colors">Transformations</a>
+      <a href="#team" class="text-on-surface-variant hover:text-primary transition-colors">Our Doctors</a>
+      <a href="#testimonials" class="text-on-surface-variant hover:text-primary transition-colors">Reviews</a>
+      <a href="#faq" class="text-on-surface-variant hover:text-primary transition-colors">FAQ</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="tel:+13125550100" class="hidden lg:flex items-center gap-1 text-on-surface-variant font-semibold text-sm hover:text-primary transition-colors">
+        <span class="material-symbols-outlined text-base">phone</span>(312) 555-0100
+      </a>
+      <button onclick="openBooking()" class="ripple-btn btn-primary text-white px-6 py-2.5 rounded-full font-headline font-bold text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform">
+        Book Now
+      </button>
+      <!-- Mobile hamburger -->
+      <button id="hamburger" onclick="toggleMobile()" class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5">
+        <span id="ham1" class="w-6 h-0.5 bg-on-surface block transition-all"></span>
+        <span id="ham2" class="w-6 h-0.5 bg-on-surface block transition-all"></span>
+        <span id="ham3" class="w-6 h-0.5 bg-on-surface block transition-all"></span>
+      </button>
+    </div>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="md:hidden glass border-t border-white/20 px-6">
+    <div class="py-6 space-y-4 font-headline font-semibold">
+      <a href="#services" onclick="toggleMobile()" class="block text-on-surface-variant hover:text-primary transition-colors">Services</a>
+      <a href="#transform" onclick="toggleMobile()" class="block text-on-surface-variant hover:text-primary transition-colors">Transformations</a>
+      <a href="#team" onclick="toggleMobile()" class="block text-on-surface-variant hover:text-primary transition-colors">Our Doctors</a>
+      <a href="#testimonials" onclick="toggleMobile()" class="block text-on-surface-variant hover:text-primary transition-colors">Reviews</a>
+      <a href="#faq" onclick="toggleMobile()" class="block text-on-surface-variant hover:text-primary transition-colors">FAQ</a>
+      <button onclick="openBooking()" class="w-full btn-primary text-white py-3 rounded-full font-bold text-sm">Book Appointment</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════ -->
+<header class="relative overflow-hidden hero-bg pt-20 pb-40 md:pt-28 md:pb-56">
+
+  <!-- Decorative blobs -->
+  <div class="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] rounded-full bg-primary/8 blur-3xl parallax-slow" data-speed="0.3"></div>
+  <div class="absolute bottom-[10%] left-[-8%] w-[400px] h-[400px] rounded-full bg-tertiary/10 blur-3xl parallax-slow" data-speed="0.2"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+    <!-- Left copy -->
+    <div class="space-y-8">
+      <div class="inline-flex items-center gap-2 glass border border-white/30 px-4 py-2 rounded-full reveal">
+        <span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings:'FILL' 1;">verified</span>
+        <span class="text-primary font-bold text-xs uppercase tracking-widest">Chicago's Premier Smile Studio</span>
+      </div>
+
+      <h1 class="text-5xl md:text-6xl xl:text-7xl font-extrabold font-headline leading-[1.05] tracking-tight text-on-surface reveal delay-100">
+        A New <br/><span class="shimmer-text">Perspective</span><br/>on Your Smile.
+      </h1>
+
+      <p class="text-lg md:text-xl text-on-surface-variant leading-relaxed max-w-xl reveal delay-200">
+        Where clinical precision meets empathetic artistry. At Mirador, we don't just transform teeth — we elevate the way you see yourself and how the world sees you.
+      </p>
+
+      <div class="flex flex-wrap gap-4 pt-2 reveal delay-300">
+        <button onclick="openBooking()" class="ripple-btn btn-primary text-white px-8 py-4 rounded-full font-headline font-bold text-lg shadow-2xl shadow-primary/25 hover:shadow-primary/40 hover:scale-105 active:scale-95 transition-all">
+          Start Your Journey
+        </button>
+        <a href="#transform" class="flex items-center gap-2 bg-surface-container-lowest text-on-surface px-8 py-4 rounded-full font-headline font-bold text-lg border border-outline-variant/20 hover:border-primary/40 hover:bg-primary-fixed transition-all">
+          <span class="material-symbols-outlined text-primary">play_circle</span> See Results
+        </a>
+      </div>
+
+      <!-- Trust row -->
+      <div class="flex flex-wrap items-center gap-6 pt-4 reveal delay-400">
+        <div class="flex -space-x-3">
+          <img src="https://i.pravatar.cc/40?img=1" alt="" class="w-10 h-10 rounded-full border-2 border-white object-cover"/>
+          <img src="https://i.pravatar.cc/40?img=2" alt="" class="w-10 h-10 rounded-full border-2 border-white object-cover"/>
+          <img src="https://i.pravatar.cc/40?img=3" alt="" class="w-10 h-10 rounded-full border-2 border-white object-cover"/>
+          <img src="https://i.pravatar.cc/40?img=4" alt="" class="w-10 h-10 rounded-full border-2 border-white object-cover"/>
+        </div>
+        <div>
+          <div class="flex text-yellow-400 text-sm">★★★★★</div>
+          <p class="text-sm text-on-surface-variant"><strong class="text-on-surface">4.9/5</strong> from 2,400+ reviews</p>
+        </div>
+        <div class="h-10 w-px bg-outline-variant/30"></div>
+        <div class="text-sm text-on-surface-variant"><strong class="text-on-surface">12K+</strong> smiles transformed</div>
+      </div>
+    </div>
+
+    <!-- Right visual -->
+    <div class="relative flex items-center justify-center">
+      <!-- Orbit ring -->
+      <div class="absolute w-[380px] h-[380px] rounded-full border border-primary/10" style="top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+      <div class="absolute w-[420px] h-[420px] rounded-full border border-primary/5" style="top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+      <div class="orbit-dot" style="top:50%;left:50%;margin:-5px;animation-delay:0s;background:#4361ee;"></div>
+      <div class="orbit-dot" style="top:50%;left:50%;margin:-5px;animation-delay:-3s;background:#00579f;animation-duration:8s;"></div>
+
+      <!-- Main image -->
+      <div class="reveal-scale relative group w-[340px] h-[340px] md:w-[400px] md:h-[400px]">
+        <div class="absolute inset-0 btn-primary rounded-full opacity-10 group-hover:opacity-20 transition-opacity blur-2xl"></div>
+        <div class="relative w-full h-full rounded-[3rem] overflow-hidden shadow-2xl border-[10px] border-white/40 rotate-2 group-hover:rotate-0 transition-transform duration-700">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIr11WJH7VoBnzjRZ3SuDqgNaHrufq21Qe51Z2ba1wiDJZ1dwesBrLkeLdfvvIn_-79Q6IN03n-NpDIiDQaLc9AS_5SY-murGAmkRqhDt9SYvZQUH3hrDUJilDECKtPji2BgjQI6-MVBm33psWn56Tq4EqEInL-WgZxJEzWGsElesGcvc5THhOyKe5bma7pAG_UaD5f2GNaS0s8veuLw80Rj2smPpOP5kVfvnK6iyN-Bdpd2LtV3Z46ONnaINbad-rXLYC5DFxiTw6"
+            alt="Mirador dental care"
+            class="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700"
+          />
+        </div>
+      </div>
+
+      <!-- Floating badge 1 -->
+      <div class="absolute -bottom-6 -left-4 md:-left-10 float-1 bg-white p-4 rounded-3xl shadow-2xl flex items-center gap-3 z-10">
+        <div class="w-11 h-11 btn-primary rounded-2xl flex items-center justify-center text-white shadow-lg shadow-primary/30 relative pulse-ring">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">shield_with_heart</span>
+        </div>
+        <div>
+          <div class="font-extrabold text-lg text-on-surface counter" data-target="99.9">99.9%</div>
+          <div class="text-xs text-on-surface-variant font-semibold">Satisfaction Rate</div>
+        </div>
+      </div>
+
+      <!-- Floating badge 2 -->
+      <div class="absolute -top-4 -right-4 md:-right-10 float-2 glass border border-white/40 p-4 rounded-3xl shadow-xl flex items-center gap-3 z-10">
+        <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 1;">workspace_premium</span>
+        <div>
+          <div class="font-extrabold text-on-surface text-sm">ADA Certified</div>
+          <div class="text-xs text-on-surface-variant">Board-Certified Docs</div>
+        </div>
+      </div>
+
+      <!-- Floating badge 3 -->
+      <div class="absolute top-1/2 -right-8 md:-right-16 float-3 bg-primary text-white p-3 px-4 rounded-2xl shadow-xl z-10">
+        <div class="text-xs font-bold opacity-80">Next available</div>
+        <div class="font-extrabold text-sm">Today, 2:30 PM</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wavy divider -->
+  <div class="absolute bottom-0 left-0 w-full leading-[0]">
+    <svg class="wavy" viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,64L60,69.3C120,75,240,85,360,80C480,75,600,53,720,48C840,43,960,53,1080,58.7C1200,64,1320,64,1380,64L1440,64L1440,120L0,120Z"/>
+    </svg>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     MARQUEE TRUST STRIP
+══════════════════════════════════════════════════ -->
+<section class="py-8 bg-surface overflow-hidden border-y border-outline-variant/10">
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <!-- repeated twice for seamless loop -->
+      <span class="flex items-center gap-3 text-on-surface-variant font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">verified</span>ADA Certified</span>
+      <span class="text-outline-variant/40 text-2xl">·</span>
+      <span class="flex items-center gap-3 text-on-surface-variant font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">workspace_premium</span>Top Doc 2024</span>
+      <span class="text-outline-variant/40 text-2xl">·</span>
+      <span class="flex items-center gap-3 text-on-surface-variant font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">biotech</span>3D Smile Mapping</span>
+      <span class="text-outline-variant/40 text-2xl">·</span>
+      <span class="flex items-center gap-3 text-on-surface-variant font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">star</span>4.9 / 5 Rating</span>
+      <span class="text-outline-variant/40 text-2xl">·</span>
+      <span class="flex items-center gap-3 text-on-surface-variant font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">neurology</span>Painless Technology</span>
+      <span class="text-outline-variant/40 text-2xl">·</span>
+      <span class="flex items-center gap-3 text-on-surface-variant font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">child_care</span>Family Friendly</span>
+      <span class="text-outline-variant/40 text-2xl">·</span>
+      <span class="flex items-center gap-3 text-on-surface-variant font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">verified</span>ADA Certified</span>
+      <span class="text-outline-variant/40 text-2xl">·</span>
+      <span class="flex items-center gap-3 text-on-surface-variant font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">workspace_premium</span>Top Doc 2024</span>
+      <span class="text-outline-variant/40 text-2xl">·</span>
+      <span class="flex items-center gap-3 text-on-surface-variant font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">biotech</span>3D Smile Mapping</span>
+      <span class="text-outline-variant/40 text-2xl">·</span>
+      <span class="flex items-center gap-3 text-on-surface-variant font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">star</span>4.9 / 5 Rating</span>
+      <span class="text-outline-variant/40 text-2xl">·</span>
+      <span class="flex items-center gap-3 text-on-surface-variant font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">neurology</span>Painless Technology</span>
+      <span class="text-outline-variant/40 text-2xl">·</span>
+      <span class="flex items-center gap-3 text-on-surface-variant font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">child_care</span>Family Friendly</span>
+      <span class="text-outline-variant/40 text-2xl">·</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     STATS
+══════════════════════════════════════════════════ -->
+<section class="py-20 bg-surface">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="text-center space-y-2 reveal">
+        <div class="text-5xl font-extrabold font-headline text-primary counter" data-target="12000" data-suffix="K+">12K+</div>
+        <div class="text-on-surface-variant font-semibold">Smiles Transformed</div>
+        <div class="mx-auto w-24 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+          <div class="stat-bar-fill h-full btn-primary rounded-full" data-width="95%"></div>
+        </div>
+      </div>
+      <div class="text-center space-y-2 reveal delay-100">
+        <div class="text-5xl font-extrabold font-headline text-primary counter" data-target="18">18+</div>
+        <div class="text-on-surface-variant font-semibold">Years of Excellence</div>
+        <div class="mx-auto w-24 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+          <div class="stat-bar-fill h-full btn-primary rounded-full" data-width="80%"></div>
+        </div>
+      </div>
+      <div class="text-center space-y-2 reveal delay-200">
+        <div class="text-5xl font-extrabold font-headline text-primary counter" data-target="99" data-suffix="%">99%</div>
+        <div class="text-on-surface-variant font-semibold">Satisfaction Rate</div>
+        <div class="mx-auto w-24 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+          <div class="stat-bar-fill h-full btn-primary rounded-full" data-width="99%"></div>
+        </div>
+      </div>
+      <div class="text-center space-y-2 reveal delay-300">
+        <div class="text-5xl font-extrabold font-headline text-primary counter" data-target="24">24/7</div>
+        <div class="text-on-surface-variant font-semibold">Emergency Support</div>
+        <div class="mx-auto w-24 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+          <div class="stat-bar-fill h-full btn-primary rounded-full" data-width="100%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SERVICES BENTO GRID
+══════════════════════════════════════════════════ -->
+<section id="services" class="py-28 bg-surface-container-low relative overflow-hidden">
+  <div class="absolute top-[-5%] left-[30%] w-[500px] h-[500px] rounded-full bg-primary/4 blur-3xl"></div>
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+    <!-- Heading -->
+    <div class="text-center mb-20 space-y-4 reveal">
+      <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest mb-2">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">medical_services</span>Our Services
+      </div>
+      <h2 class="text-4xl md:text-5xl xl:text-6xl font-extrabold font-headline tracking-tight">Expertise for <span class="shimmer-text">Every Smile</span></h2>
+      <p class="text-on-surface-variant max-w-2xl mx-auto text-lg leading-relaxed">We combine 18 years of clinical excellence with the world's most advanced dental technologies.</p>
+    </div>
+
+    <!-- Bento grid -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+      <!-- Large hero card -->
+      <div class="md:col-span-8 bg-surface-container-lowest rounded-[2.5rem] p-10 card-lift group relative overflow-hidden cursor-pointer" onclick="openBooking()">
+        <div class="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-24 -mt-24 group-hover:scale-150 transition-transform duration-700"></div>
+        <div class="absolute bottom-0 left-0 w-40 h-40 bg-tertiary/5 rounded-full -ml-10 -mb-10 group-hover:scale-150 transition-transform duration-700"></div>
+        <div class="relative z-10 reveal-left">
+          <div class="w-16 h-16 btn-primary rounded-2xl flex items-center justify-center text-white mb-8 group-hover:rotate-12 group-hover:scale-110 transition-all shadow-lg shadow-primary/30">
+            <span class="material-symbols-outlined text-3xl" style="font-variation-settings:'FILL' 1;">biotech</span>
+          </div>
+          <h3 class="text-3xl font-bold font-headline mb-4">Precision Diagnostics</h3>
+          <p class="text-on-surface-variant text-lg leading-relaxed max-w-lg mb-8">AI-driven intraoral scanning and 3D panoramic imaging that detects issues before they become painful problems — with sub-millimeter accuracy.</p>
+          <a class="inline-flex items-center gap-2 text-primary font-bold text-lg group-hover:gap-4 transition-all">
+            Explore technology <span class="material-symbols-outlined">arrow_forward</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Portrait accent card -->
+      <div class="md:col-span-4 btn-primary rounded-[2.5rem] p-10 text-white card-lift group relative overflow-hidden cursor-pointer" onclick="openBooking()">
+        <div class="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-all duration-500"></div>
+        <div class="relative z-10 reveal-right">
+          <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-3xl" style="font-variation-settings:'FILL' 1;">magic_button</span>
+          </div>
+          <h3 class="text-2xl font-bold font-headline mb-4">Cosmetic Artistry</h3>
+          <p class="text-white/80 text-lg leading-relaxed mb-10">Bespoke smile design, high-end veneers, and laser whitening — all tailored to your unique facial geometry.</p>
+          <button class="w-full bg-white text-primary font-bold py-4 rounded-2xl hover:bg-primary-fixed transition-colors">View Gallery</button>
+        </div>
+      </div>
+
+      <!-- Small cards row -->
+      <div class="md:col-span-4 bg-surface-container-lowest rounded-[2rem] p-8 card-lift group relative overflow-hidden cursor-pointer reveal" onclick="openBooking()">
+        <div class="w-12 h-12 bg-tertiary-container rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">child_care</span>
+        </div>
+        <h4 class="text-xl font-bold font-headline mb-2">Pediatric Care</h4>
+        <p class="text-on-surface-variant">Gentle, fun introductions to lifelong oral health — building healthy habits from the very first tooth.</p>
+      </div>
+
+      <div class="md:col-span-4 bg-surface-container-lowest rounded-[2rem] p-8 card-lift group relative overflow-hidden cursor-pointer reveal delay-100" onclick="openBooking()">
+        <div class="w-12 h-12 bg-secondary-container rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">neurology</span>
+        </div>
+        <h4 class="text-xl font-bold font-headline mb-2">Sedation Dentistry</h4>
+        <p class="text-on-surface-variant">Anxiety-free treatments designed for total comfort. Up to 94% of our anxious patients report zero stress.</p>
+      </div>
+
+      <div class="md:col-span-4 bg-surface-container-lowest rounded-[2rem] p-8 card-lift group relative overflow-hidden cursor-pointer reveal delay-200" onclick="openBooking()">
+        <div class="w-12 h-12 bg-on-secondary-fixed-variant rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">health_metrics</span>
+        </div>
+        <h4 class="text-xl font-bold font-headline mb-2">Oral Surgery</h4>
+        <p class="text-on-surface-variant">Complex extractions, implants, and bone grafts performed by dual-board-certified surgeons.</p>
+      </div>
+
+      <!-- Wide bottom card -->
+      <div class="md:col-span-12 gradient-bg rounded-[2.5rem] p-10 card-lift group relative overflow-hidden cursor-pointer reveal" onclick="openBooking()">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+          <div class="space-y-3 relative z-10">
+            <div class="text-xs font-bold uppercase tracking-widest text-primary">Most Popular</div>
+            <h3 class="text-3xl font-bold font-headline">Invisalign & Clear Aligners</h3>
+            <p class="text-on-surface-variant max-w-lg leading-relaxed">Straighten your teeth discreetly in as little as 6 months with our custom-mapped clear aligner program — no metal, no hassle.</p>
+          </div>
+          <div class="flex items-center gap-6 shrink-0">
+            <div class="text-center">
+              <div class="text-4xl font-extrabold font-headline text-primary">6mo</div>
+              <div class="text-xs text-on-surface-variant font-semibold">Avg. Treatment</div>
+            </div>
+            <button onclick="openBooking()" class="ripple-btn btn-primary text-white px-8 py-4 rounded-full font-headline font-bold shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all whitespace-nowrap">
+              Free Consultation
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     BEFORE / AFTER INTERACTIVE SLIDER
+══════════════════════════════════════════════════ -->
+<section id="transform" class="py-28 bg-surface overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Left copy -->
+      <div class="space-y-8 reveal-left">
+        <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest">
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">compare</span>Real Results
+        </div>
+        <h2 class="text-4xl md:text-5xl xl:text-6xl font-extrabold font-headline tracking-tight">Witness the <span class="shimmer-text">Transformation</span></h2>
+        <p class="text-lg text-on-surface-variant leading-relaxed">Using our proprietary Digital Smile Design, we map your future smile before treatment begins. Drag the slider to see precision cosmetic results.</p>
+
+        <div class="space-y-5">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0 mt-0.5">
+              <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            </div>
+            <div>
+              <div class="font-bold text-on-surface mb-1">Personalized Aesthetic Mapping</div>
+              <div class="text-on-surface-variant text-sm">AI models your ideal smile using 200+ facial measurement points.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0 mt-0.5">
+              <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            </div>
+            <div>
+              <div class="font-bold text-on-surface mb-1">Minimally Invasive Techniques</div>
+              <div class="text-on-surface-variant text-sm">Preserve maximum natural tooth structure with our micro-preparation protocols.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0 mt-0.5">
+              <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            </div>
+            <div>
+              <div class="font-bold text-on-surface mb-1">Same-Day Smile Previews</div>
+              <div class="text-on-surface-variant text-sm">Walk out of your first appointment knowing exactly what your new smile will look like.</div>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="openBooking()" class="ripple-btn btn-primary text-white px-8 py-4 rounded-full font-headline font-bold text-lg shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+          Book a Smile Preview
+        </button>
+      </div>
+
+      <!-- Right: Before/After slider -->
+      <div class="reveal-right">
+        <div id="ba-slider" class="relative rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white aspect-[4/3] select-none touch-none">
+
+          <!-- AFTER image (base layer, full width) -->
+          <img
+            id="ba-after"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpZ2wy_jAEOgQ_qb8LWIpfhrImSwhC8RI31FEWFVlpQz3AVfrtG8lN4rftVkPPNG0G9-49WRylT2OONLVkfHS1BbBBnl4rKS2iVge6zPWb9kA-pOnDHogA5iPcIsUkasfiM-We5IGXW_HdrrKjXYHGxpFcgdsZrX2q9nGM7GhJ76oT--tRRQdV1QnOMqbOt_52_5n9JrLMG2qxCC4NKYYoidsuhSyyHrIwX91vKFNhacLiBaEtrAAYx1n_NG50q_R9zNHF6qslOIgL"
+            alt="After dental treatment — radiant smile"
+            class="absolute inset-0 w-full h-full object-cover"
+            draggable="false"
+          />
+
+          <!-- BEFORE image (clipped overlay) -->
+          <div id="ba-before-container" class="absolute inset-0 overflow-hidden z-10" style="width:50%">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4TPm9HzCNn2Gb3qMWhOQ_95WJo9TNX9D23TdgiptUZ4z_iMqQfz_yh9rPIYQcPa3QdVKtWa_EuBCmsp2JrePF5KxNboBw50VHEV8IUCnHclUqT49Lf7Vgr3rNpR50Nj0Lu7zFsWANKwIaoRL9a7Raitgck4Wnbv2KSlSpyxJvE4lsugIhLaE9RbxmX7xnDDW3Dmj7G3NIo49muhHxN2r65SMPK308Ri6aIuZ0fFIMK3WqWFf1kHkIlcxki9SVUAG--5jHPlgraVRJ"
+              alt="Before dental treatment"
+              class="absolute inset-0 h-full object-cover"
+              style="width: 200%"
+              draggable="false"
+            />
+          </div>
+
+          <!-- Divider line -->
+          <div id="ba-divider" class="absolute top-0 bottom-0 z-20" style="left:50%;transform:translateX(-50%);width:4px;background:white;box-shadow:0 0 0 1px rgba(35,70,213,.3)"></div>
+
+          <!-- Drag handle -->
+          <div id="ba-handle" class="absolute top-1/2 z-30 w-14 h-14 bg-white rounded-full shadow-2xl flex items-center justify-center text-primary border-4 border-primary cursor-ew-resize" style="left:50%;transform:translate(-50%,-50%)">
+            <span class="material-symbols-outlined text-2xl">unfold_more</span>
+          </div>
+
+          <!-- Labels -->
+          <div class="absolute bottom-5 left-5 z-40 bg-black/50 backdrop-blur-md px-4 py-1.5 rounded-full text-white text-xs font-bold uppercase tracking-widest">Before</div>
+          <div class="absolute bottom-5 right-5 z-40 bg-primary/70 backdrop-blur-md px-4 py-1.5 rounded-full text-white text-xs font-bold uppercase tracking-widest">After Mirador</div>
+
+          <!-- Drag hint -->
+          <div id="ba-hint" class="absolute inset-0 z-25 flex items-center justify-center pointer-events-none">
+            <div class="bg-black/30 backdrop-blur-sm text-white text-sm font-semibold px-4 py-2 rounded-full flex items-center gap-2 opacity-100 transition-opacity duration-500">
+              <span class="material-symbols-outlined text-base">swipe</span> Drag to compare
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery selector -->
+        <div class="mt-6 flex gap-3 justify-center">
+          <button class="ba-thumb active w-16 h-16 rounded-2xl overflow-hidden border-2 border-primary shadow-lg" data-index="0">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpZ2wy_jAEOgQ_qb8LWIpfhrImSwhC8RI31FEWFVlpQz3AVfrtG8lN4rftVkPPNG0G9-49WRylT2OONLVkfHS1BbBBnl4rKS2iVge6zPWb9kA-pOnDHogA5iPcIsUkasfiM-We5IGXW_HdrrKjXYHGxpFcgdsZrX2q9nGM7GhJ76oT--tRRQdV1QnOMqbOt_52_5n9JrLMG2qxCC4NKYYoidsuhSyyHrIwX91vKFNhacLiBaEtrAAYx1n_NG50q_R9zNHF6qslOIgL" class="w-full h-full object-cover" alt="Case 1"/>
+          </button>
+          <button class="ba-thumb w-16 h-16 rounded-2xl overflow-hidden border-2 border-outline-variant/30 hover:border-primary transition-colors" data-index="1">
+            <img src="https://i.pravatar.cc/64?img=10" class="w-full h-full object-cover" alt="Case 2"/>
+          </button>
+          <button class="ba-thumb w-16 h-16 rounded-2xl overflow-hidden border-2 border-outline-variant/30 hover:border-primary transition-colors" data-index="2">
+            <img src="https://i.pravatar.cc/64?img=20" class="w-full h-full object-cover" alt="Case 3"/>
+          </button>
+          <button class="ba-thumb w-16 h-16 rounded-2xl overflow-hidden border-2 border-outline-variant/30 hover:border-primary transition-colors" data-index="3">
+            <img src="https://i.pravatar.cc/64?img=30" class="w-full h-full object-cover" alt="Case 4"/>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     TEAM
+══════════════════════════════════════════════════ -->
+<section id="team" class="py-28 bg-background relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-primary/3 to-transparent"></div>
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+    <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 reveal">
+      <div class="max-w-2xl space-y-4">
+        <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest">
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">groups</span>Meet the Team
+        </div>
+        <h2 class="text-4xl md:text-5xl xl:text-6xl font-extrabold font-headline tracking-tight">The Minds Behind <span class="shimmer-text">the Magic</span></h2>
+        <p class="text-on-surface-variant text-lg leading-relaxed">Board-certified specialists dedicated to your comfort, health, and aesthetic goals.</p>
+      </div>
+      <button class="text-primary font-bold flex items-center gap-2 hover:gap-4 transition-all font-headline">
+        View Full Team <span class="material-symbols-outlined">trending_flat</span>
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <!-- Doc 1 -->
+      <div class="group reveal">
+        <div class="aspect-[4/5] rounded-[3rem] overflow-hidden mb-6 relative shadow-xl">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxa6_Yf_HzMbBwz_QOa06GSIAiQEo3kN6xU-btnt32C-H8OAkcm2fH54qfRTdi1Ke4P69IJLdxJde3YCIYoD0MmQOxMUsYbfGjX-J-tR0iLwA5U4A53YTeRDKVt75UTzR7N5XOaKNGEUBS354eyT-1U-0iaEHUNWa4P2U1eX7QMY0HvVckYfNmq96sCS2lc0MWHEtFf3alCFqfsdO6nYus6UIk9ZdmnxcmhbaWHIqwFuANcgghT3iuhAf-XIZy8AKZFSBG80x147xd"
+            alt="Dr. Julian Vance" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+            <p class="text-white/90 text-sm font-medium mb-3 leading-relaxed">"My goal is to make every patient feel like they're visiting family."</p>
+            <div class="flex gap-2">
+              <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">Invisalign</span>
+              <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">Braces</span>
+            </div>
+          </div>
+        </div>
+        <h3 class="text-2xl font-bold font-headline mb-1">Dr. Julian Vance</h3>
+        <p class="text-primary font-bold text-sm uppercase tracking-widest mb-2">Chief Orthodontist</p>
+        <p class="text-on-surface-variant text-sm">Harvard Dental School · 15 yrs experience</p>
+      </div>
+
+      <!-- Doc 2 — offset -->
+      <div class="group md:pt-12 reveal delay-100">
+        <div class="aspect-[4/5] rounded-[3rem] overflow-hidden mb-6 relative shadow-xl">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp6Qu-OwyaV9w1tqZDlm1ladc51AO7CWqvtKAV-cvaIKF1T7l2gb8Yy_PXFWcffCBve-Swmso7A3XUcfnw6Tzp13nMC0dDHE8k8KyL6uZ720zt_qagbwdogM-cIhQ54LPiRFchyJ7J_WmJ_6rZs0xeWgkPhtBbHLJBK-47At9TMoO6fsNUPf4zv-wEdL3HW8Bv4WksjTlHfs3RCiv3hq4kxqfL8PT_Nd4LXHGVMDcQ7OctsvAqB3hUuJ-OVqkUqRoNMk3s_Lfon5Wu"
+            alt="Dr. Elena Rodriguez" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+            <p class="text-white/90 text-sm font-medium mb-3 leading-relaxed">"Artistry and clinical precision must go hand in hand."</p>
+            <div class="flex gap-2">
+              <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">Veneers</span>
+              <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">Whitening</span>
+            </div>
+          </div>
+        </div>
+        <h3 class="text-2xl font-bold font-headline mb-1">Dr. Elena Rodriguez</h3>
+        <p class="text-primary font-bold text-sm uppercase tracking-widest mb-2">Cosmetic Lead</p>
+        <p class="text-on-surface-variant text-sm">NYU College of Dentistry · 12 yrs experience</p>
+      </div>
+
+      <!-- Doc 3 -->
+      <div class="group reveal delay-200">
+        <div class="aspect-[4/5] rounded-[3rem] overflow-hidden mb-6 relative shadow-xl">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCAQGAQTgMiOv4BlFxSpEy8KCzBrMUc0A9sJ1iSas-z1sO_CH5mWeDqbsvVK3YMvBxqGeyBigjQkUJ6gUNQiyktHOA8vbaXZUqXJqdiMGUPSrp_L3Xx-O6UmsyUEPYEs8QBRM6Jga6y5TnUefteEOzxqPhrDqL81eRNqmqYO3zF6vPsBhLZpImTPznXRQYcCCF5PVte4hPL2CY41S48hgAlRVw6-2l2VF9HENHjYw7eTVtHWXicBq"
+            alt="Dr. Samuel Chen" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+            <p class="text-white/90 text-sm font-medium mb-3 leading-relaxed">"Advancing dental health through technology and empathy."</p>
+            <div class="flex gap-2">
+              <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">Implants</span>
+              <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">Surgery</span>
+            </div>
+          </div>
+        </div>
+        <h3 class="text-2xl font-bold font-headline mb-1">Dr. Samuel Chen</h3>
+        <p class="text-primary font-bold text-sm uppercase tracking-widest mb-2">Oral & Implant Surgeon</p>
+        <p class="text-on-surface-variant text-sm">U of Chicago Pritzker · 20 yrs experience</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     TESTIMONIALS CAROUSEL
+══════════════════════════════════════════════════ -->
+<section id="testimonials" class="py-28 bg-surface-container-lowest overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center mb-16 space-y-4 reveal">
+      <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">reviews</span>Patient Stories
+      </div>
+      <h2 class="text-4xl md:text-5xl xl:text-6xl font-extrabold font-headline tracking-tight">Real People, <span class="shimmer-text">Real Results</span></h2>
+      <p class="text-on-surface-variant text-lg max-w-2xl mx-auto">Hear directly from patients who've changed their smiles — and their lives.</p>
+    </div>
+
+    <!-- Carousel wrapper -->
+    <div class="relative overflow-hidden reveal">
+      <div id="testimonial-track" class="testimonial-track gap-8">
+
+        <!-- Card 1 -->
+        <div class="w-full md:w-[calc(33.333%-1.333rem)] shrink-0 bg-surface-container-low p-8 rounded-[2.5rem] border border-outline-variant/15 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group">
+          <div class="flex text-yellow-400 text-xl mb-6">★★★★★</div>
+          <p class="text-lg text-on-surface mb-8 italic leading-relaxed">"The level of technology here is mind-blowing. I could see my treatment plan in 3D before we even started. My new smile is exactly what I dreamed of."</p>
+          <div class="flex items-center gap-4">
+            <img src="https://i.pravatar.cc/56?img=44" alt="Sarah J." class="w-14 h-14 rounded-full object-cover border-2 border-primary/20"/>
+            <div>
+              <h4 class="font-bold text-on-surface">Sarah Jenkins</h4>
+              <p class="text-sm text-on-surface-variant">Porcelain Veneers Patient</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 — featured -->
+        <div class="w-full md:w-[calc(33.333%-1.333rem)] shrink-0 btn-primary p-8 rounded-[2.5rem] text-white shadow-2xl shadow-primary/25 group">
+          <div class="flex text-white text-xl mb-6">★★★★★</div>
+          <p class="text-xl font-medium mb-8 italic leading-relaxed">"I've always had dental anxiety. The sedation services and empathetic staff at Mirador changed everything. I actually look forward to my appointments now."</p>
+          <div class="flex items-center gap-4">
+            <img src="https://i.pravatar.cc/56?img=33" alt="Michael R." class="w-14 h-14 rounded-full object-cover border-2 border-white/30"/>
+            <div>
+              <h4 class="font-bold text-white">Michael Roberts</h4>
+              <p class="text-sm text-white/70">General Care Patient</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="w-full md:w-[calc(33.333%-1.333rem)] shrink-0 bg-surface-container-low p-8 rounded-[2.5rem] border border-outline-variant/15 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group">
+          <div class="flex text-yellow-400 text-xl mb-6">★★★★★</div>
+          <p class="text-lg text-on-surface mb-8 italic leading-relaxed">"As an executive, my smile is my first impression. Mirador delivered absolute perfection with their veneer work. Professional, precise, and life-changing."</p>
+          <div class="flex items-center gap-4">
+            <img src="https://i.pravatar.cc/56?img=60" alt="David L." class="w-14 h-14 rounded-full object-cover border-2 border-primary/20"/>
+            <div>
+              <h4 class="font-bold text-on-surface">David Lawson</h4>
+              <p class="text-sm text-on-surface-variant">Business Consultant</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="w-full md:w-[calc(33.333%-1.333rem)] shrink-0 bg-surface-container-low p-8 rounded-[2.5rem] border border-outline-variant/15 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group">
+          <div class="flex text-yellow-400 text-xl mb-6">★★★★★</div>
+          <p class="text-lg text-on-surface mb-8 italic leading-relaxed">"Dr. Vance straightened my teeth in 8 months with Invisalign. I barely noticed I was wearing them. The results are stunning — totally worth it."</p>
+          <div class="flex items-center gap-4">
+            <img src="https://i.pravatar.cc/56?img=48" alt="Amy K." class="w-14 h-14 rounded-full object-cover border-2 border-primary/20"/>
+            <div>
+              <h4 class="font-bold text-on-surface">Amy Kowalski</h4>
+              <p class="text-sm text-on-surface-variant">Invisalign Patient</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="w-full md:w-[calc(33.333%-1.333rem)] shrink-0 bg-surface-container-low p-8 rounded-[2.5rem] border border-outline-variant/15 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group">
+          <div class="flex text-yellow-400 text-xl mb-6">★★★★★</div>
+          <p class="text-lg text-on-surface mb-8 italic leading-relaxed">"Best implant experience I've ever had — and I've been to 4 other offices. Dr. Chen is a true artist. My implant feels and looks completely natural."</p>
+          <div class="flex items-center gap-4">
+            <img src="https://i.pravatar.cc/56?img=55" alt="Tom R." class="w-14 h-14 rounded-full object-cover border-2 border-primary/20"/>
+            <div>
+              <h4 class="font-bold text-on-surface">Tom Ramos</h4>
+              <p class="text-sm text-on-surface-variant">Implant Patient</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Carousel controls -->
+      <div class="flex items-center justify-center gap-4 mt-10">
+        <button id="t-prev" onclick="testimonialPrev()" class="w-12 h-12 rounded-full bg-surface-container border border-outline-variant/20 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <div id="t-dots" class="flex gap-2">
+          <button class="t-dot w-2.5 h-2.5 rounded-full bg-primary transition-all" onclick="testimonialGo(0)"></button>
+          <button class="t-dot w-2.5 h-2.5 rounded-full bg-outline-variant/40 transition-all" onclick="testimonialGo(1)"></button>
+          <button class="t-dot w-2.5 h-2.5 rounded-full bg-outline-variant/40 transition-all" onclick="testimonialGo(2)"></button>
+        </div>
+        <button id="t-next" onclick="testimonialNext()" class="w-12 h-12 rounded-full bg-surface-container border border-outline-variant/20 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all">
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     PROCESS / HOW IT WORKS
+══════════════════════════════════════════════════ -->
+<section class="py-28 bg-background">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center mb-20 reveal">
+      <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest mb-4">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">route</span>Your Journey
+      </div>
+      <h2 class="text-4xl md:text-5xl xl:text-6xl font-extrabold font-headline tracking-tight mb-4">Your Path to <span class="shimmer-text">a New Smile</span></h2>
+      <p class="text-on-surface-variant text-lg max-w-2xl mx-auto">Four simple steps from your first visit to your dream smile.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+      <!-- Connector line desktop -->
+      <div class="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-primary/20 via-primary to-primary/20"></div>
+
+      <!-- Step 1 -->
+      <div class="text-center space-y-4 reveal">
+        <div class="relative mx-auto w-16 h-16 btn-primary rounded-full flex items-center justify-center text-white shadow-xl shadow-primary/30 z-10">
+          <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1;">calendar_month</span>
+          <div class="absolute -top-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center text-primary font-extrabold text-xs border-2 border-primary">1</div>
+        </div>
+        <h3 class="font-bold font-headline text-xl">Book Online</h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed">Choose your service, pick a time, and confirm in under 60 seconds.</p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="text-center space-y-4 reveal delay-100">
+        <div class="relative mx-auto w-16 h-16 rounded-full bg-surface-container-low flex items-center justify-center shadow-lg z-10 border border-outline-variant/20">
+          <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 1;">biotech</span>
+          <div class="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white font-extrabold text-xs">2</div>
+        </div>
+        <h3 class="font-bold font-headline text-xl">3D Consultation</h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed">We scan, map, and digitally design your personalized treatment plan.</p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="text-center space-y-4 reveal delay-200">
+        <div class="relative mx-auto w-16 h-16 rounded-full bg-surface-container-low flex items-center justify-center shadow-lg z-10 border border-outline-variant/20">
+          <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 1;">local_hospital</span>
+          <div class="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white font-extrabold text-xs">3</div>
+        </div>
+        <h3 class="font-bold font-headline text-xl">Treatment</h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed">Our specialists execute your plan with precision, comfort, and care.</p>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="text-center space-y-4 reveal delay-300">
+        <div class="relative mx-auto w-16 h-16 rounded-full bg-surface-container-low flex items-center justify-center shadow-lg z-10 border border-outline-variant/20">
+          <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 1;">sentiment_very_satisfied</span>
+          <div class="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white font-extrabold text-xs">4</div>
+        </div>
+        <h3 class="font-bold font-headline text-xl">Smile Reveal</h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed">Experience your transformation and step out with the confidence you deserve.</p>
+      </div>
+    </div>
+
+    <div class="text-center mt-16 reveal">
+      <button onclick="openBooking()" class="ripple-btn btn-primary text-white px-10 py-5 rounded-full font-headline font-bold text-xl shadow-2xl shadow-primary/25 hover:scale-105 active:scale-95 transition-all">
+        Start My Smile Journey
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FAQ
+══════════════════════════════════════════════════ -->
+<section id="faq" class="py-28 bg-surface-container-low">
+  <div class="max-w-3xl mx-auto px-6 lg:px-8">
+    <div class="text-center mb-16 reveal">
+      <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest mb-4">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">help</span>FAQ
+      </div>
+      <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tight">Common <span class="shimmer-text">Questions</span></h2>
+    </div>
+
+    <div class="space-y-4 reveal">
+
+      <div class="faq-item bg-surface-container-lowest rounded-[1.5rem] overflow-hidden border border-outline-variant/10 hover:border-primary/20 transition-colors">
+        <button class="faq-trigger w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+          <span class="font-bold font-headline text-lg">Does it hurt? What about anxiety?</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 ml-4">add</span>
+        </button>
+        <div class="faq-answer px-6">
+          <p class="text-on-surface-variant leading-relaxed pb-6">We offer multiple sedation options — from nitrous oxide to IV sedation — so you feel nothing. 94% of previously anxious patients rate their experience at Mirador as completely comfortable.</p>
+        </div>
+      </div>
+
+      <div class="faq-item bg-surface-container-lowest rounded-[1.5rem] overflow-hidden border border-outline-variant/10 hover:border-primary/20 transition-colors">
+        <button class="faq-trigger w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+          <span class="font-bold font-headline text-lg">How much do veneers or Invisalign cost?</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 ml-4">add</span>
+        </button>
+        <div class="faq-answer px-6">
+          <p class="text-on-surface-variant leading-relaxed pb-6">Every smile is unique. We offer transparent, itemized estimates during your free 3D consultation — no surprise fees ever. We also provide 0% APR financing for up to 24 months through CareCredit.</p>
+        </div>
+      </div>
+
+      <div class="faq-item bg-surface-container-lowest rounded-[1.5rem] overflow-hidden border border-outline-variant/10 hover:border-primary/20 transition-colors">
+        <button class="faq-trigger w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+          <span class="font-bold font-headline text-lg">Do you accept insurance?</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 ml-4">add</span>
+        </button>
+        <div class="faq-answer px-6">
+          <p class="text-on-surface-variant leading-relaxed pb-6">Yes — we accept most major dental insurance plans, including Delta Dental, Cigna, Aetna, and United Concordia. Our team handles all insurance billing so you don't have to deal with the paperwork.</p>
+        </div>
+      </div>
+
+      <div class="faq-item bg-surface-container-lowest rounded-[1.5rem] overflow-hidden border border-outline-variant/10 hover:border-primary/20 transition-colors">
+        <button class="faq-trigger w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+          <span class="font-bold font-headline text-lg">How long does a veneer procedure take?</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 ml-4">add</span>
+        </button>
+        <div class="faq-answer px-6">
+          <p class="text-on-surface-variant leading-relaxed pb-6">Most veneer placements are completed in 2–3 appointments across 2–3 weeks. Thanks to our in-house milling lab, we can often deliver same-day veneers for qualifying cases with CEREC technology.</p>
+        </div>
+      </div>
+
+      <div class="faq-item bg-surface-container-lowest rounded-[1.5rem] overflow-hidden border border-outline-variant/10 hover:border-primary/20 transition-colors">
+        <button class="faq-trigger w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+          <span class="font-bold font-headline text-lg">Can I see my results before committing?</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 ml-4">add</span>
+        </button>
+        <div class="faq-answer px-6">
+          <p class="text-on-surface-variant leading-relaxed pb-6">Absolutely. Our Digital Smile Design technology lets you see a photo-realistic preview of your new smile on your own face at your first consultation — before any treatment begins.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     CTA BANNER
+══════════════════════════════════════════════════ -->
+<section class="py-24 btn-primary relative overflow-hidden">
+  <div class="absolute inset-0">
+    <div class="absolute top-[-30%] right-[-10%] w-[600px] h-[600px] rounded-full bg-white/5 blur-3xl"></div>
+    <div class="absolute bottom-[-20%] left-[-5%] w-[400px] h-[400px] rounded-full bg-white/5 blur-3xl"></div>
+  </div>
+  <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10 reveal">
+    <div class="inline-flex items-center gap-2 bg-white/15 border border-white/20 px-4 py-2 rounded-full text-white text-xs font-bold uppercase tracking-widest mb-8">
+      <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">local_offer</span>Limited Offer
+    </div>
+    <h2 class="text-4xl md:text-6xl font-extrabold font-headline text-white leading-tight mb-6">
+      Free 3D Smile<br/>Consultation — Today
+    </h2>
+    <p class="text-white/80 text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+      Book before midnight and receive a complimentary Digital Smile Design session (a $350 value) with any new patient exam.
+    </p>
+    <button onclick="openBooking()" class="ripple-btn bg-white text-primary px-10 py-5 rounded-full font-headline font-bold text-xl shadow-2xl hover:scale-105 active:scale-95 transition-transform">
+      Claim My Free Consultation
+    </button>
+    <div class="mt-6 text-white/60 text-sm">No credit card. No commitment. Cancel anytime.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════ -->
+<footer class="bg-on-surface text-white pt-20 pb-10 relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-50"></div>
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 pb-16 border-b border-white/10">
+      <!-- Brand -->
+      <div class="md:col-span-1 space-y-6">
+        <a href="#" class="flex items-center gap-2 group">
+          <div class="w-8 h-8 btn-primary rounded-xl flex items-center justify-center shadow-lg">
+            <span class="material-symbols-outlined text-white text-base" style="font-variation-settings:'FILL' 1;">visibility</span>
+          </div>
+          <span class="text-2xl font-extrabold tracking-tighter font-headline">Mirador<span class="text-primary-fixed">.</span></span>
+        </a>
+        <p class="text-white/60 text-sm leading-relaxed">A new perspective on dental care — where precision meets empathy in Chicago's premier smile studio.</p>
+        <div class="flex gap-3">
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+            <span class="material-symbols-outlined text-base">public</span>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+            <span class="material-symbols-outlined text-base">camera_alt</span>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+            <span class="material-symbols-outlined text-base">reviews</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <div class="space-y-6">
+        <h4 class="font-headline font-bold uppercase tracking-widest text-xs text-white/40">Navigation</h4>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#services" class="text-white/60 hover:text-white hover:translate-x-1 transition-all inline-block">Services</a></li>
+          <li><a href="#transform" class="text-white/60 hover:text-white hover:translate-x-1 transition-all inline-block">Transformations</a></li>
+          <li><a href="#team" class="text-white/60 hover:text-white hover:translate-x-1 transition-all inline-block">Our Doctors</a></li>
+          <li><a href="#testimonials" class="text-white/60 hover:text-white hover:translate-x-1 transition-all inline-block">Patient Stories</a></li>
+          <li><a href="#faq" class="text-white/60 hover:text-white hover:translate-x-1 transition-all inline-block">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div class="space-y-6">
+        <h4 class="font-headline font-bold uppercase tracking-widest text-xs text-white/40">Patient Resources</h4>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#" class="text-white/60 hover:text-white hover:translate-x-1 transition-all inline-block">Insurance & Financing</a></li>
+          <li><a href="#" class="text-white/60 hover:text-white hover:translate-x-1 transition-all inline-block">Patient Rights</a></li>
+          <li><a href="#" class="text-white/60 hover:text-white hover:translate-x-1 transition-all inline-block">Privacy Policy</a></li>
+          <li><a href="#" class="text-white/60 hover:text-white hover:translate-x-1 transition-all inline-block">Terms of Service</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="space-y-6">
+        <h4 class="font-headline font-bold uppercase tracking-widest text-xs text-white/40">Contact Us</h4>
+        <div class="space-y-4 text-sm">
+          <div class="flex items-start gap-3 text-white/60">
+            <span class="material-symbols-outlined text-base text-primary-fixed mt-0.5">location_on</span>
+            <span>123 Mirador Blvd, Suite 200<br/>Chicago, IL 60601</span>
+          </div>
+          <div class="flex items-center gap-3 text-white/60">
+            <span class="material-symbols-outlined text-base text-primary-fixed">phone</span>
+            <a href="tel:+13125550100" class="hover:text-white transition-colors">(312) 555-0100</a>
+          </div>
+          <div class="flex items-center gap-3 text-white/60">
+            <span class="material-symbols-outlined text-base text-primary-fixed">mail</span>
+            <a href="mailto:hello@miradordental.com" class="hover:text-white transition-colors">hello@miradordental.com</a>
+          </div>
+          <div class="flex items-center gap-3 text-white/60">
+            <span class="material-symbols-outlined text-base text-primary-fixed">schedule</span>
+            <span>Mon–Fri 8am–7pm · Sat 9am–4pm</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/30">
+      <p>© 2025 Mirador Dental Studio. All rights reserved.</p>
+      <p>Designed with care · Chicago, IL</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════
+     FLOATING APPOINTMENT BAR
+══════════════════════════════════════════════════ -->
+<div id="floating-bar" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-3xl z-50 opacity-0 translate-y-8 transition-all duration-500">
+  <div class="floating-bar rounded-full p-2 border border-white/60 flex items-center gap-2 justify-between">
+    <!-- Date picker -->
+    <button class="flex-1 hidden md:flex items-center gap-3 px-5 py-2 rounded-full hover:bg-surface-container-low transition-colors" onclick="openBooking()">
+      <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1;">calendar_month</span>
+      <div class="text-left">
+        <p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Date</p>
+        <p class="text-sm font-bold text-on-surface">Select Date</p>
+      </div>
+    </button>
+    <div class="hidden md:block w-px h-8 bg-outline-variant/20"></div>
+    <!-- Service -->
+    <button class="flex-1 hidden md:flex items-center gap-3 px-5 py-2 rounded-full hover:bg-surface-container-low transition-colors" onclick="openBooking()">
+      <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1;">medical_services</span>
+      <div class="text-left">
+        <p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Service</p>
+        <p class="text-sm font-bold text-on-surface">General Checkup</p>
+      </div>
+    </button>
+    <div class="hidden md:block w-px h-8 bg-outline-variant/20"></div>
+    <!-- Doctor -->
+    <button class="flex-1 flex items-center gap-3 px-5 py-2 rounded-full hover:bg-surface-container-low transition-colors" onclick="openBooking()">
+      <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1;">person_search</span>
+      <div class="text-left">
+        <p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Doctor</p>
+        <p class="text-sm font-bold text-on-surface">Any Available</p>
+      </div>
+    </button>
+    <!-- CTA -->
+    <button onclick="openBooking()" class="ripple-btn btn-primary text-white h-14 px-7 rounded-full font-headline font-bold text-sm shadow-xl shadow-primary/30 hover:scale-105 active:scale-95 transition-transform whitespace-nowrap">
+      Book Now
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     BOOKING MODAL
+══════════════════════════════════════════════════ -->
+<div id="booking-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+  <div class="absolute inset-0 bg-on-surface/40 backdrop-blur-sm" onclick="closeBooking()"></div>
+  <div id="booking-card" class="relative bg-surface-container-lowest rounded-[2.5rem] w-full max-w-lg p-10 shadow-2xl transform scale-95 transition-transform duration-300 overflow-y-auto max-h-[90vh]">
+    <button onclick="closeBooking()" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <div class="mb-8">
+      <div class="w-12 h-12 btn-primary rounded-2xl flex items-center justify-center text-white mb-4 shadow-lg shadow-primary/30">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">calendar_month</span>
+      </div>
+      <h3 class="text-3xl font-extrabold font-headline mb-1">Book an Appointment</h3>
+      <p class="text-on-surface-variant">We'll confirm within 2 hours.</p>
+    </div>
+
+    <form onsubmit="submitBooking(event)" class="space-y-5">
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Full Name</label>
+        <input type="text" placeholder="Jane Smith" required class="w-full bg-surface-container-low rounded-2xl px-5 py-3.5 text-on-surface font-body outline-none focus:ring-2 focus:ring-primary/30 transition border border-outline-variant/20 focus:border-primary/40"/>
+      </div>
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Phone or Email</label>
+        <input type="text" placeholder="jane@email.com or (312) 555-0000" required class="w-full bg-surface-container-low rounded-2xl px-5 py-3.5 text-on-surface font-body outline-none focus:ring-2 focus:ring-primary/30 transition border border-outline-variant/20 focus:border-primary/40"/>
+      </div>
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Service</label>
+        <select class="w-full bg-surface-container-low rounded-2xl px-5 py-3.5 text-on-surface font-body outline-none focus:ring-2 focus:ring-primary/30 transition border border-outline-variant/20 focus:border-primary/40 appearance-none">
+          <option>Free 3D Smile Consultation</option>
+          <option>General Checkup & Cleaning</option>
+          <option>Cosmetic Veneers</option>
+          <option>Invisalign</option>
+          <option>Teeth Whitening</option>
+          <option>Dental Implants</option>
+          <option>Pediatric Appointment</option>
+          <option>Emergency Visit</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Preferred Date</label>
+        <input type="date" class="w-full bg-surface-container-low rounded-2xl px-5 py-3.5 text-on-surface font-body outline-none focus:ring-2 focus:ring-primary/30 transition border border-outline-variant/20 focus:border-primary/40"/>
+      </div>
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Notes (optional)</label>
+        <textarea rows="3" placeholder="Any concerns or special requests?" class="w-full bg-surface-container-low rounded-2xl px-5 py-3.5 text-on-surface font-body outline-none focus:ring-2 focus:ring-primary/30 transition border border-outline-variant/20 focus:border-primary/40 resize-none"></textarea>
+      </div>
+      <button type="submit" class="ripple-btn w-full btn-primary text-white py-4 rounded-full font-headline font-bold text-lg shadow-xl shadow-primary/25 hover:scale-[1.02] active:scale-95 transition-all">
+        Confirm Appointment
+      </button>
+      <p class="text-center text-xs text-on-surface-variant">No payment required to book. We'll call to confirm.</p>
+    </form>
+
+    <!-- Success state -->
+    <div id="booking-success" class="hidden absolute inset-0 bg-surface-container-lowest rounded-[2.5rem] flex flex-col items-center justify-center text-center p-10">
+      <div class="w-20 h-20 btn-primary rounded-full flex items-center justify-center text-white mb-6 shadow-2xl shadow-primary/30">
+        <span class="material-symbols-outlined text-4xl" style="font-variation-settings:'FILL' 1;">check_circle</span>
+      </div>
+      <h3 class="text-3xl font-extrabold font-headline mb-3">You're booked!</h3>
+      <p class="text-on-surface-variant leading-relaxed mb-8">We'll confirm your appointment within 2 hours. Check your email for details.</p>
+      <button onclick="closeBooking()" class="ripple-btn btn-primary text-white px-8 py-3 rounded-full font-headline font-bold">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════ -->
+<script>
+// ─── Cursor glow ───────────────────────────────
+const glow = document.getElementById('cursor-glow');
+document.addEventListener('mousemove', e => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+});
+
+// ─── Nav scroll state ──────────────────────────
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+  // Show floating bar after hero
+  const bar = document.getElementById('floating-bar');
+  if (window.scrollY > 500) {
+    bar.style.opacity = '1';
+    bar.style.transform = 'translateX(-50%) translateY(0)';
+  } else {
+    bar.style.opacity = '0';
+    bar.style.transform = 'translateX(-50%) translateY(2rem)';
+  }
+}, { passive: true });
+
+// ─── Mobile menu ───────────────────────────────
+let mobileOpen = false;
+function toggleMobile() {
+  mobileOpen = !mobileOpen;
+  document.getElementById('mobile-menu').classList.toggle('open', mobileOpen);
+  const h1 = document.getElementById('ham1');
+  const h2 = document.getElementById('ham2');
+  const h3 = document.getElementById('ham3');
+  if (mobileOpen) {
+    h1.style.cssText = 'transform:translateY(8px) rotate(45deg)';
+    h2.style.cssText = 'opacity:0';
+    h3.style.cssText = 'transform:translateY(-8px) rotate(-45deg)';
+  } else {
+    h1.style.cssText = h2.style.cssText = h3.style.cssText = '';
+  }
+}
+
+// ─── Scroll reveal ─────────────────────────────
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+revealEls.forEach(el => io.observe(el));
+
+// ─── Stat bar fills & counters ─────────────────
+const statBars = document.querySelectorAll('.stat-bar-fill');
+const statIo = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.width = e.target.dataset.width;
+      statIo.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+statBars.forEach(b => statIo.observe(b));
+
+// ─── Before/After slider ───────────────────────
+(function() {
+  const slider = document.getElementById('ba-slider');
+  const beforeContainer = document.getElementById('ba-before-container');
+  const divider = document.getElementById('ba-divider');
+  const handle = document.getElementById('ba-handle');
+  const hint = document.getElementById('ba-hint');
+  let dragging = false;
+  let hinted = false;
+
+  function setPosition(x) {
+    const rect = slider.getBoundingClientRect();
+    let pct = Math.max(5, Math.min(95, ((x - rect.left) / rect.width) * 100));
+    beforeContainer.style.width = pct + '%';
+    divider.style.left = pct + '%';
+    handle.style.left = pct + '%';
+    if (!hinted) {
+      hint.style.opacity = '0';
+      hinted = true;
+    }
+  }
+
+  slider.addEventListener('mousedown', e => { dragging = true; setPosition(e.clientX); });
+  window.addEventListener('mousemove', e => { if (dragging) setPosition(e.clientX); });
+  window.addEventListener('mouseup', () => { dragging = false; });
+
+  slider.addEventListener('touchstart', e => { dragging = true; setPosition(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('touchmove', e => { if (dragging) setPosition(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('touchend', () => { dragging = false; });
+
+  // Auto-animate hint
+  setTimeout(() => {
+    if (!hinted) {
+      let start = null;
+      function animateHint(ts) {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / 1200, 1);
+        const pos = slider.getBoundingClientRect();
+        const x = pos.left + pos.width * (0.5 + Math.sin(p * Math.PI) * 0.18);
+        setPosition(x);
+        if (p < 1) requestAnimationFrame(animateHint);
+        else {
+          setPosition(pos.left + pos.width * 0.5);
+          hint.style.opacity = '1';
+        }
+      }
+      requestAnimationFrame(animateHint);
+    }
+  }, 2000);
+})();
+
+// ─── Testimonial carousel ──────────────────────
+let tIdx = 0;
+const tTrack = document.getElementById('testimonial-track');
+const tDots = document.querySelectorAll('.t-dot');
+
+function testimonialGo(idx) {
+  const cards = tTrack.children;
+  const isDesktop = window.innerWidth >= 768;
+  const total = isDesktop ? Math.max(0, cards.length - 3) : cards.length - 1;
+  tIdx = Math.max(0, Math.min(idx, total));
+  const cardW = isDesktop
+    ? (tTrack.parentElement.offsetWidth + 32) / 3
+    : tTrack.parentElement.offsetWidth + 32;
+  tTrack.style.transform = `translateX(-${tIdx * cardW}px)`;
+  tDots.forEach((d, i) => {
+    d.classList.toggle('bg-primary', i === tIdx);
+    d.classList.toggle('bg-outline-variant/40', i !== tIdx);
+    d.style.width = i === tIdx ? '2rem' : '';
+    d.style.borderRadius = '9999px';
+  });
+}
+function testimonialNext() { testimonialGo(tIdx + 1); }
+function testimonialPrev() { testimonialGo(tIdx - 1); }
+
+// Auto-advance
+setInterval(() => testimonialNext(), 5000);
+
+// ─── FAQ accordion ─────────────────────────────
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const answer = item.querySelector('.faq-answer');
+  const isOpen = item.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.faq-item.open').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-answer').classList.remove('open');
+  });
+  if (!isOpen) {
+    item.classList.add('open');
+    answer.classList.add('open');
+  }
+}
+
+// ─── Booking modal ─────────────────────────────
+function openBooking() {
+  const modal = document.getElementById('booking-modal');
+  const card = document.getElementById('booking-card');
+  modal.classList.remove('opacity-0', 'pointer-events-none');
+  modal.classList.add('opacity-100');
+  requestAnimationFrame(() => {
+    card.style.transform = 'scale(1)';
+  });
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBooking() {
+  const modal = document.getElementById('booking-modal');
+  const card = document.getElementById('booking-card');
+  modal.classList.add('opacity-0', 'pointer-events-none');
+  card.style.transform = 'scale(0.95)';
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    document.getElementById('booking-success').classList.add('hidden');
+  }, 400);
+}
+
+function submitBooking(e) {
+  e.preventDefault();
+  document.getElementById('booking-success').classList.remove('hidden');
+  document.getElementById('booking-success').style.display = 'flex';
+  document.getElementById('booking-success').style.flexDirection = 'column';
+}
+
+// ─── Ripple effect ─────────────────────────────
+document.querySelectorAll('.ripple-btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    const r = document.createElement('span');
+    r.className = 'ripple';
+    const rect = this.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;`;
+    this.appendChild(r);
+    setTimeout(() => r.remove(), 700);
+  });
+});
+
+// ─── Parallax blobs ────────────────────────────
+const parallaxEls = document.querySelectorAll('.parallax-slow');
+window.addEventListener('scroll', () => {
+  const sy = window.scrollY;
+  parallaxEls.forEach(el => {
+    const speed = parseFloat(el.dataset.speed || 0.3);
+    el.style.transform = `translateY(${sy * speed}px)`;
+  });
+}, { passive: true });
+</script>
+
+</body>
+</html>
