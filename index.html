@@ -138,8 +138,27 @@ tailwind.config = {
   .ripple-btn { position: relative; overflow: hidden; }
   .ripple-btn .ripple { position: absolute; border-radius: 50%; transform: scale(0); animation: ripple .6s linear; background: rgba(255,255,255,.4); pointer-events: none; }
 
-  /* ─── Testimonial carousel ─── */
-  .testimonial-track { display: flex; transition: transform .5s cubic-bezier(.16,1,.3,1); }
+  /* ─── Testimonial marquee ─── */
+  .tmq-outer { width: 100%; overflow: hidden; padding: .5rem 0; }
+  .tmq-row-wrap { position: relative; width: 100%; }
+  .tmq-row { display: flex; width: max-content; gap: 1.25rem; padding: .5rem 0; animation: tmqScroll 42s linear infinite; }
+  .tmq-row:hover { animation-play-state: paused; }
+  .tmq-reverse { animation-direction: reverse; }
+  @keyframes tmqScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .tmq-fade { position: absolute; top: 0; bottom: 0; width: 10rem; z-index: 10; pointer-events: none; }
+  .tmq-fade-l { left: 0; background: linear-gradient(to right, #ffffff 20%, transparent); }
+  .tmq-fade-r { right: 0; background: linear-gradient(to left, #ffffff 20%, transparent); }
+  .tmq-card { flex-shrink: 0; width: 21rem; background: #f2f4f6; border-radius: 1.5rem; border: 1px solid rgba(196,197,215,.25); padding: 1.5rem; display: flex; flex-direction: column; gap: .75rem; position: relative; transition: box-shadow .3s, transform .3s, border-color .3s; cursor: default; user-select: none; }
+  .tmq-card:hover { box-shadow: 0 12px 40px -8px rgba(35,70,213,.14); transform: translateY(-3px); border-color: rgba(35,70,213,.2); }
+  .tmq-gbadge { position: absolute; top: 1.1rem; right: 1.1rem; opacity: .35; transition: opacity .25s; }
+  .tmq-card:hover .tmq-gbadge { opacity: .9; }
+  .tmq-stars { color: #f59e0b; font-size: 1rem; letter-spacing: .08em; line-height: 1; }
+  .tmq-text { font-size: .9rem; color: #444655; line-height: 1.75; flex: 1; font-style: italic; }
+  .tmq-footer { display: flex; align-items: center; gap: .75rem; margin-top: .25rem; border-top: 1px solid rgba(196,197,215,.35); padding-top: 1rem; }
+  .tmq-avatar { width: 2.5rem; height: 2.5rem; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .8rem; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: .02em; }
+  .tmq-name { font-weight: 700; font-size: .9rem; color: #191c1e; line-height: 1.2; font-family: 'Plus Jakarta Sans', sans-serif; }
+  .tmq-label { font-size: .72rem; color: #747686; margin-top: .1rem; }
+  @media (max-width: 640px) { .tmq-card { width: 16rem; padding: 1.1rem; } .tmq-fade { width: 3.5rem; } }
 
   /* ─── Stat bar fill ─── */
   .stat-bar-fill { width: 0; transition: width 1.4s cubic-bezier(.16,1,.3,1); }
@@ -758,98 +777,64 @@ tailwind.config = {
 
 
 <!-- ═══════════════════════════════════════════════
-     TESTIMONIALS CAROUSEL
+     TESTIMONIALS — Infinite Marquee
 ══════════════════════════════════════════════════ -->
 <section id="testimonials" class="py-28 bg-surface-container-lowest overflow-hidden">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
-    <div class="text-center mb-16 space-y-4 reveal">
+
+  <!-- Header -->
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 mb-16">
+    <div class="text-center space-y-5 reveal">
       <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest">
         <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">reviews</span>Patient Stories
       </div>
+
+      <!-- Google aggregate rating -->
+      <div class="flex items-center justify-center gap-3 flex-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="26" height="26" aria-label="Google">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        <div class="flex text-yellow-400 text-xl gap-px">★★★★★</div>
+        <span class="font-extrabold text-2xl font-headline text-on-surface">4.9</span>
+        <span class="w-px h-5 bg-outline-variant/50 mx-0.5 inline-block align-middle"></span>
+        <span class="text-on-surface-variant text-sm font-medium">703 Google reviews</span>
+      </div>
+
       <h2 class="text-4xl md:text-5xl xl:text-6xl font-extrabold font-headline tracking-tight">Trusted by Families <span class="shimmer-text">Across Cochin</span></h2>
-      <p class="text-on-surface-variant text-lg max-w-2xl mx-auto">Hear from real patients who chose specialist care — and never looked back.</p>
-    </div>
-
-    <!-- Carousel wrapper -->
-    <div class="relative overflow-hidden reveal">
-      <div id="testimonial-track" class="testimonial-track gap-8">
-
-        <!-- Card 1 -->
-        <!-- David Nelson -->
-        <div class="w-full md:w-[calc(33.333%-1.333rem)] shrink-0 bg-surface-container-low p-8 rounded-[2.5rem] border border-outline-variant/15 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group">
-          <div class="flex text-yellow-400 text-xl mb-6">★★★★★</div>
-          <p class="text-lg text-on-surface mb-8 italic leading-relaxed">"I can smile with confidence now. Thanks to Dr. Joseph Varghese. He was very friendly and supportive, and explained the treatment clearly. I had a gap between my upper front teeth which affected my confidence. He corrected my teeth perfectly."</p>
-          <div class="flex items-center gap-4">
-            <img src="https://i.pravatar.cc/56?img=44" alt="David Nelson" class="w-14 h-14 rounded-full object-cover border-2 border-primary/20"/>
-            <div>
-              <h4 class="font-bold text-on-surface">David Nelson</h4>
-              <p class="text-sm text-on-surface-variant">Orthodontic Patient</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Anjali Mathew — featured -->
-        <div class="w-full md:w-[calc(33.333%-1.333rem)] shrink-0 btn-primary p-8 rounded-[2.5rem] text-white shadow-2xl shadow-primary/25 group">
-          <div class="flex text-white text-xl mb-6">★★★★★</div>
-          <p class="text-xl font-medium mb-8 italic leading-relaxed">"Had a fabulous experience at the clinic. The staff is very welcoming and well trained. My journey with braces for a year went smoothly under Dr. Joseph Varghese. Currently enjoying my new smile!"</p>
-          <div class="flex items-center gap-4">
-            <img src="https://i.pravatar.cc/56?img=33" alt="Anjali Mathew" class="w-14 h-14 rounded-full object-cover border-2 border-white/30"/>
-            <div>
-              <h4 class="font-bold text-white">Anjali Mathew</h4>
-              <p class="text-sm text-white/70">Braces Patient</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Jayasree -->
-        <div class="w-full md:w-[calc(33.333%-1.333rem)] shrink-0 bg-surface-container-low p-8 rounded-[2.5rem] border border-outline-variant/15 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group">
-          <div class="flex text-yellow-400 text-xl mb-6">★★★★★</div>
-          <p class="text-lg text-on-surface mb-8 italic leading-relaxed">"Orthodontix and More is without a doubt the best dental clinic in Cochin. It has a very warm and friendly ambience, and Dr. Joseph Varghese and all the other staff are the best. Would highly recommend."</p>
-          <div class="flex items-center gap-4">
-            <img src="https://i.pravatar.cc/56?img=60" alt="Jayasree C." class="w-14 h-14 rounded-full object-cover border-2 border-primary/20"/>
-            <div>
-              <h4 class="font-bold text-on-surface">Jayasree C.</h4>
-              <p class="text-sm text-on-surface-variant">General Patient</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Deepa Sachith -->
-        <div class="w-full md:w-[calc(33.333%-1.333rem)] shrink-0 bg-surface-container-low p-8 rounded-[2.5rem] border border-outline-variant/15 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group">
-          <div class="flex text-yellow-400 text-xl mb-6">★★★★★</div>
-          <p class="text-lg text-on-surface mb-8 italic leading-relaxed">"It's an excellent dental clinic. Dr. Joseph Varghese is the best and he has been our favourite orthodontist for <strong>2 generations</strong>. The ambience of the clinic is awesome. Kudos to the entire team."</p>
-          <div class="flex items-center gap-4">
-            <img src="https://i.pravatar.cc/56?img=48" alt="Deepa Sachith" class="w-14 h-14 rounded-full object-cover border-2 border-primary/20"/>
-            <div>
-              <h4 class="font-bold text-on-surface">Deepa Sachith</h4>
-              <p class="text-sm text-on-surface-variant">Multi-Generational Patient</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Carousel controls -->
-      <div class="flex items-center justify-center gap-4 mt-10">
-        <button id="t-prev" onclick="testimonialPrev()" class="w-12 h-12 rounded-full bg-surface-container border border-outline-variant/20 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all">
-          <span class="material-symbols-outlined">arrow_back</span>
-        </button>
-        <div id="t-dots" class="flex gap-2">
-          <button class="t-dot w-2.5 h-2.5 rounded-full bg-primary transition-all" onclick="testimonialGo(0)"></button>
-          <button class="t-dot w-2.5 h-2.5 rounded-full bg-outline-variant/40 transition-all" onclick="testimonialGo(1)"></button>
-          <button class="t-dot w-2.5 h-2.5 rounded-full bg-outline-variant/40 transition-all" onclick="testimonialGo(2)"></button>
-        </div>
-        <button id="t-next" onclick="testimonialNext()" class="w-12 h-12 rounded-full bg-surface-container border border-outline-variant/20 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all">
-          <span class="material-symbols-outlined">arrow_forward</span>
-        </button>
-      </div>
-      <div class="text-center mt-8">
-        <a href="https://www.google.com/search?q=orthodontix+and+more&sca_esv=4240043c73feb5c7&sxsrf=ANbL-n7CFHx9WLJaKqguGEGhvbMW2INVaA%3A1775975218076&source=hp&ei=MjvbafaTAZil2roPlfvFuAE&iflsig=AFdpzrgAAAAAadtJQnUdHp1na9-TurpLAAWZV4291Rbz&gs_ssp=eJzj4tZP1zcsSTMoMDQzM2C0UjWoME4ysDA3Sk5NNEpJtbS0MLUyqEg2TjU1TkxMTTU2NUqyTDT2EskvKsnIT8nPK8msUEjMS1HIzS9KBQAObRak&oq=orthodontix+&gs_lp=Egdnd3Mtd2l6IgxvcnRob2RvbnRpeCAqAggAMgsQLhiABBjHARivATIJEAAYgAQYChgLMgwQABiABBixAxgKGAsyDBAAGIAEGLEDGAoYCzIJEAAYgAQYChgLMgkQABiABBgKGAsyBRAAGIAEMgkQABiABBgKGAsyCRAAGIAEGAoYCzIJEAAYgAQYChgLSK89UABYlyxwAHgAkAEAmAGwAaAB0QuqAQQxLjExuAEByAEA-AEBmAIMoAL9C8ICChAjGIAEGCcYigXCAggQABiABBixA8ICDhAuGIAEGLEDGNEDGMcBwgILEAAYgAQYsQMYgwHCAggQLhiABBixA8ICDhAuGIAEGLEDGIMBGIoFwgILEAAYgAQYsQMYigXCAgsQLhiABBjRAxjHAcICDhAAGIAEGLEDGIMBGIoFwgIFEC4YgATCAggQABiABBjJA8ICCxAAGIAEGJIDGIoFwgILEAAYgAQYsQMYyQOYAwCSBwQwLjEyoAfqW7IHBDAuMTK4B_0LwgcIMC4xMS4wLjHIBx2ACAA&sclient=gws-wiz#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-primary font-bold hover:gap-4 transition-all font-headline">
-          Read More Reviews on Google <span class="material-symbols-outlined">open_in_new</span>
-        </a>
-      </div>
+      <p class="text-on-surface-variant text-lg max-w-2xl mx-auto">Real patients. Real results. Hear from the families who chose specialist care — and never looked back.</p>
     </div>
   </div>
+
+  <!-- ── Infinite marquee rows ── -->
+  <div class="tmq-outer reveal">
+
+    <!-- Row 1: scrolls → -->
+    <div class="tmq-row-wrap">
+      <div class="tmq-fade tmq-fade-l"></div>
+      <div class="tmq-row" id="tmq-r1"></div>
+      <div class="tmq-fade tmq-fade-r"></div>
+    </div>
+
+    <!-- Row 2: scrolls ← -->
+    <div class="tmq-row-wrap" style="margin-top:1.25rem">
+      <div class="tmq-fade tmq-fade-l"></div>
+      <div class="tmq-row tmq-reverse" id="tmq-r2"></div>
+      <div class="tmq-fade tmq-fade-r"></div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center mt-14">
+      <a href="https://www.google.com/search?q=orthodontix+and+more+kochi+reviews" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-primary font-bold hover:gap-4 transition-all font-headline">
+        Read All 703 Reviews on Google <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </div>
+
 </section>
 
 <!-- ═══════════════════════════════════════════════
@@ -1254,21 +1239,45 @@ statBars.forEach(b => statIo.observe(b));
   const specialists = [
     {
       name: 'Dr. Joseph Varghese',
-      designation: 'Lead Orthodontist · Ohio State University (USA) · 30+ yrs',
-      quote: 'Your smile is my life\'s work — and after 30 years, I\'m still passionate about getting it right.',
-      src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDxa6_Yf_HzMbBwz_QOa06GSIAiQEo3kN6xU-btnt32C-H8OAkcm2fH54qfRTdi1Ke4P69IJLdxJde3YCIYoD0MmQOxMUsYbfGjX-J-tR0iLwA5U4A53YTeRDKVt75UTzR7N5XOaKNGEUBS354eyT-1U-0iaEHUNWa4P2U1eX7QMY0HvVckYfNmq96sCS2lc0MWHEtFf3alCFqfsdO6nYus6UIk9ZdmnxcmhbaWHIqwFuANcgghT3iuhAf-XIZy8AKZFSBG80x147xd'
+      designation: 'Lead Orthodontist · M.S. Ohio State University · American Board Certified · 30+ yrs',
+      quote: 'Thirty years of straightening smiles, and every case still excites me. True orthodontics is part science, part art — and I take both seriously.',
+      src: 'mirador-assets/dr-joseph-varghese.jpg'
     },
     {
       name: 'Dr. Joyce Thomas',
-      designation: 'Consultant Prosthodontist · Award-winning · 10+ yrs',
-      quote: 'A beautiful restoration should feel as natural as the tooth it replaces.',
-      src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDp6Qu-OwyaV9w1tqZDlm1ladc51AO7CWqvtKAV-cvaIKF1T7l2gb8Yy_PXFWcffCBve-Swmso7A3XUcfnw6Tzp13nMC0dDHE8k8KyL6uZ720zt_qagbwdogM-cIhQ54LPiRFchyJ7J_WmJ_6rZs0xeWgkPhtBbHLJBK-47At9TMoO6fsNUPf4zv-wEdL3HW8Bv4WksjTlHfs3RCiv3hq4kxqfL8PT_Nd4LXHGVMDcQ7OctsvAqB3hUuJ-OVqkUqRoNMk3s_Lfon5Wu'
+      designation: 'Consultant Prosthodontist · Award-Winning · Life Member, Indian Prosthodontic Society',
+      quote: 'A crown, a bridge, a full restoration — whatever it takes, your final result should be indistinguishable from nature. That\'s the standard I hold myself to.',
+      src: 'mirador-assets/dr-joyce-thomas.jpg'
     },
     {
       name: 'Dr. Geni Jacob',
-      designation: 'Endodontist & Conservative Dentist · Multi-city experience',
-      quote: 'My job is to save your tooth — comfortably and completely. Every patient deserves a pain-free experience.',
-      src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBCAQGAQTgMiOv4BlFxSpEy8KCzBrMUc0A9sJ1iSas-z1sO_CH5mWeDqbsvVK3YMvBxqGeyBigjQkUJ6gUNQiyktHOA8vbaXZUqXJqdiMGUPSrp_L3Xx-O6UmsyUEPYEs8QBRM6Jga6y5TnUefteEOzxqPhrDqL81eRNqmqYO3zF6vPsBhLZpImTPznXRQYcCCF5PVte4hPL2CY41S48hgAlRVw6-2l2VF9HENHjYw7eTVtHWXicBq'
+      designation: 'Endodontist & Conservative Dentist · Root Canal Specialist · Aesthetic Dentistry',
+      quote: 'Most people fear the root canal more than the pain it\'s treating. My goal is to change that — one comfortable, precise procedure at a time.',
+      src: 'mirador-assets/dr-geni-jacob.jpg'
+    },
+    {
+      name: 'Dr. Augustine Daniel',
+      designation: 'Oral & Maxillofacial Surgeon · Periodontist · F.I.A.O.M.S. · Dual MDS · 30+ yrs',
+      quote: 'Surgery should solve problems, not create new ones. Thirty years of precision have taught me that patience and preparation are the best instruments in any operating room.',
+      src: 'mirador-assets/dr-augustine-daniel.jpg'
+    },
+    {
+      name: 'Dr. Rekha Thomas',
+      designation: 'General Dentist · Paediatric Preventive Care · 25+ yrs Experience',
+      quote: 'The best dental work is the kind you prevent. I\'ve spent 25 years helping families — especially children — build habits that last a lifetime.',
+      src: 'mirador-assets/dr-rekha-thomas.jpg'
+    },
+    {
+      name: 'Dr. Ekitha Elizabeth Joseph',
+      designation: 'General Dentist · AB Shetty Dental College, Mangalore',
+      quote: 'Every patient who walks in anxious and walks out relieved is a reminder of why I chose this path. Gentle, thorough care is always the right approach.',
+      src: 'mirador-assets/dr-ekitha-joseph.jpg'
+    },
+    {
+      name: 'Dr. Anila Valsan',
+      designation: 'Paediatric Dentist · MDS Pedodontics & Preventive Dentistry · Practising since 2016',
+      quote: 'Children remember their first dental visit forever. I make sure that memory is a positive one — because a child who isn\'t afraid of the dentist grows into an adult who takes care of their teeth.',
+      src: 'mirador-assets/dr-anila-valsan.jpg'
     }
   ];
 
@@ -1444,32 +1453,56 @@ statBars.forEach(b => statIo.observe(b));
   }, 2000);
 })();
 
-// ─── Testimonial carousel ──────────────────────
-let tIdx = 0;
-const tTrack = document.getElementById('testimonial-track');
-const tDots = document.querySelectorAll('.t-dot');
+// ─── Testimonials Marquee ──────────────────────
+(function() {
+  const reviews = [
+    /* ── Row 1 (5 cards) ── */
+    { name: 'Aquabyme',          label: 'Orthodontic Patient',           color: '#2346d5', text: 'Dr. Joseph did my braces 17 years ago. It was an absolute pleasure seeing him again after so many years. I had a small issue with my retainers and the doctor fixed it immediately. His work truly lasts a lifetime. Very happy with the service.' },
+    { name: 'Anjali Mathew',     label: 'Braces Patient',                color: '#7c3aed', text: 'Had a fabulous experience at the clinic. The staff is very welcoming and well trained. My journey with braces for a year went smoothly under Dr. Joseph Varghese. Currently enjoying my new smile!' },
+    { name: 'Alexander George',  label: 'Dental Patient',                color: '#059669', text: 'Dr. Joe and team are incredibly professional, gentle, and make every visit comfortable and stress-free. Their attention to detail and patient care is outstanding.' },
+    { name: 'Jayasree C.',       label: 'General Dental Patient',        color: '#d97706', text: 'Orthodontix and More is without a doubt the best dental clinic in Cochin. It has a very warm and friendly ambience, and Dr. Joseph Varghese and all the other staff are the best. Would highly recommend.' },
+    { name: 'Jasmine Johnson',   label: 'Braces & Oral Surgery Patient', color: '#be123c', text: 'Extremely happy with my treatment. Dr. Joseph made it work and ensured I got the best results. My smile has truly been transformed and the process was so easy and pain-free. Even my wisdom teeth removal happened so smoothly. Would definitely recommend!' },
+    /* ── Row 2 (4 cards) ── */
+    { name: 'Keerthana',         label: 'Orthodontic Patient',           color: '#0d9488', text: 'I have been a patient at Dr. Joseph Varghese for the past two years, visiting monthly for orthodontic treatment. The treatment successfully addressed my overjet and I\'m thrilled with the results. The staff and Dr. Varghese are very nice and professional. I now feel confident about my smile.' },
+    { name: 'David Nelson',      label: 'Orthodontic Patient',           color: '#4f46e5', text: 'I can smile with confidence now. Thanks to Dr. Joseph Varghese. He was very friendly and supportive, and explained the treatment clearly. I had a gap between my upper front teeth which affected my confidence. He corrected my teeth perfectly.' },
+    { name: 'Devanandha Renjith',label: 'Braces Patient',                color: '#db2777', text: 'After many consultations which told me I needed surgery, I was recommended this clinic by a friend. After 2 years of a comfortable braces journey, I now have a smile I can confidently show off. Thank you to Dr. Joseph and all the friendly staff.' },
+    { name: 'Deepa Sachith',     label: 'Multi-Generational Patient',    color: '#2346d5', text: 'It\'s an excellent dental clinic. Dr. Joseph Varghese is the best and has been our favourite orthodontist for 2 generations. The ambience of the clinic is awesome. Kudos to the entire team.' },
+  ];
 
-function testimonialGo(idx) {
-  const cards = tTrack.children;
-  const isDesktop = window.innerWidth >= 768;
-  const total = isDesktop ? Math.max(0, cards.length - 3) : cards.length - 1;
-  tIdx = Math.max(0, Math.min(idx, total));
-  const cardW = isDesktop
-    ? (tTrack.parentElement.offsetWidth + 32) / 3
-    : tTrack.parentElement.offsetWidth + 32;
-  tTrack.style.transform = `translateX(-${tIdx * cardW}px)`;
-  tDots.forEach((d, i) => {
-    d.classList.toggle('bg-primary', i === tIdx);
-    d.classList.toggle('bg-outline-variant/40', i !== tIdx);
-    d.style.width = i === tIdx ? '2rem' : '';
-    d.style.borderRadius = '9999px';
-  });
-}
-function testimonialNext() { testimonialGo(tIdx + 1); }
-function testimonialPrev() { testimonialGo(tIdx - 1); }
+  const ROW_SPLIT = 5;
+  const row1 = reviews.slice(0, ROW_SPLIT);
+  const row2 = reviews.slice(ROW_SPLIT);
 
-// Auto-advance
-setInterval(() => testimonialNext(), 5000);
+  const gSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="16" height="16"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>`;
+
+  function initials(name) {
+    return name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+  }
+
+  function buildCard(r) {
+    return `<div class="tmq-card">
+      <div class="tmq-gbadge" title="Google Review">${gSVG}</div>
+      <div class="tmq-stars">★★★★★</div>
+      <p class="tmq-text">"${r.text}"</p>
+      <div class="tmq-footer">
+        <div class="tmq-avatar" style="background:${r.color}">${initials(r.name)}</div>
+        <div>
+          <div class="tmq-name">${r.name}</div>
+          <div class="tmq-label">${r.label}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function fillRow(id, data) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = [...data, ...data].map(buildCard).join('');
+  }
+
+  fillRow('tmq-r1', row1);
+  fillRow('tmq-r2', row2);
+}());
 
 // ─── FAQ accordion ─────────────────────────────
 function toggleFaq(btn) {
